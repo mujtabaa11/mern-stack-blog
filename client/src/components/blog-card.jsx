@@ -2,7 +2,11 @@ import { useNavigate } from "react-router-dom";
 import { FaTrash, FaEdit } from "react-icons/fa";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { setFormData, setIsEdit, deleteBlog } from "../store/blog-slice/blog-slice";
+import {
+  setFormData,
+  setIsEdit,
+  deleteBlog,
+} from "../store/blog-slice/blog-slice";
 
 export default function BlogCard({ post }) {
   const navigate = useNavigate();
@@ -35,30 +39,27 @@ export default function BlogCard({ post }) {
 
   return (
     <div
-      style={{
-        cursor: "pointer",
-        border: "1px solid #ddd",
-        padding: "10px",
-        margin: "10px",
-      }}
+      className="blog-card border border-border-primary rounded-lg p-4 m-4 hover:shadow-lg transition-shadow"
+      onClick={() => console.log("Blog card clicked")} // Replace or remove based on your logic
     >
-      {/* Blog title */}
-      <p>{post.title}</p>
+      {/* Blog Title */}
+      <p className="text-lg font-bold text-text-primary mb-2">{post.title}</p>
 
-      {/* Blog image */}
-      <div>
-        {post.image && (
+      {/* Blog Image */}
+      <div className="mb-4">
+        {post.image ? (
           <img
-            src={post.image} // Default image if post.image is not provided
+            src={post.image}
             alt={post.title}
-            width={500} // Example width, adjust based on design
-            height={300} // Example height, adjust based on design
+            className="w-full h-auto rounded"
           />
+        ) : (
+          <p className="text-sm text-text-secondary">No image available</p>
         )}
       </div>
 
-      {/* Blog details */}
-      <div>
+      {/* Blog Details */}
+      <div className="text-sm text-text-secondary mb-4">
         <p>
           {post.createdAt
             ? new Date(post.createdAt).toLocaleDateString("en-US", {
@@ -68,24 +69,32 @@ export default function BlogCard({ post }) {
               })
             : "Date not available"}
         </p>
-        <p>{post.author}</p>
-        <p>{post.category}</p>
+        <p>{post.author || "Unknown author"}</p>
+        <p>{post.category || "Uncategorized"}</p>
       </div>
 
-      {/* Blog content snippet */}
-      <p>{post.body.substring(0, 100)}...</p>
+      {/* Blog Content Snippet */}
+      <p className="text-sm text-text-primary mb-4">
+        {post.body.substring(0, 100)}...
+      </p>
 
-      {/* Edit and Delete icons */}
-      <div style={{ display: "flex", gap: "10px" }}>
+      {/* Edit and Delete Icons */}
+      <div className="flex gap-4 items-center">
         <FaEdit
-          onClick={() => handleEdit(post)}
+          onClick={(e) => {
+            e.stopPropagation(); // Prevent triggering card click
+            handleEdit(post);
+          }}
           size={20}
-          style={{ cursor: "pointer" }}
+          className="text-text-primary cursor-pointer hover:text-text-accent transition-colors"
         />
         <FaTrash
-          onClick={handleDelete}
+          onClick={(e) => {
+            e.stopPropagation(); // Prevent triggering card click
+            handleDelete(post);
+          }}
           size={20}
-          style={{ cursor: "pointer" }}
+          className="text-text-primary cursor-pointer hover:text-red-500 transition-colors"
         />
       </div>
     </div>

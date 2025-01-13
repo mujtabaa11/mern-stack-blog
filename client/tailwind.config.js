@@ -5,7 +5,13 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primary: 'var(--bg-header)', // Using the header color as the primary button color
+        'text-primary': 'var(--text-primary)',
+        'text-secondary': 'var(--text-secondary)',
+      },
+    },
   },
   plugins: [],
 }
