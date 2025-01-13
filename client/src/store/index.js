@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
-import blogSlice from './blog-slice/blog-slice.js';
+import errorReducer from './error-slice/error-slice.js';
+import blogReducer from './blog-slice/blog-slice.js';
 
 
 const store = configureStore({
     reducer: {
         // Define your reducers here
-        blog: blogSlice,
+        blog: blogReducer,
+        error: errorReducer,
     },
 });
 

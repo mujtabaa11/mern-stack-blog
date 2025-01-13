@@ -1,8 +1,8 @@
-import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
+import { setErrorMessage } from "../store/error-slice/error-slice";
 import {
   setFormData,
   setIsEdit,
@@ -15,8 +15,8 @@ import {
 export default function BlogEditor() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { errorMessage } = useSelector((state) => state.error);
   const { formData, isEdit, isPending } = useSelector((state) => state.blog);
-  const [errorMessage, setErrorMessage] = useState("");
 
   // Helper function to convert file to Base64
   const convertToBase64 = (file) => {
@@ -44,13 +44,13 @@ export default function BlogEditor() {
   async function handleBlogFormSubmission(e) {
     e.preventDefault();
 
-    if (isPending) return;
+    if (isPending) return; // Prevent multiple submissions
 
     dispatch(setIsPending(true));
 
     try {
       // Validate required fields
-      if (!formData.title || !formData.author || !formData.category) {
+      if (!formData.title || !formData.body ) {
         setErrorMessage("Please fill in all required fields.");
         dispatch(setIsPending(false));
         return;
@@ -59,14 +59,12 @@ export default function BlogEditor() {
       // Prepare the payload as a plain object
       const payload = {
         title: formData.title,
-        body: formData.body || "",
-        author: formData.author,
-        category: formData.category,
+        body: formData.body,
+        author: formData.author || "Anonymous",
+        category: formData.category || "Other",
         tags: formData.tags || "",
         image: formData.image || "", // Send the Base64 string
       };
-
-      console.log("Payload being sent:", payload);
 
       let response;
 
@@ -76,7 +74,7 @@ export default function BlogEditor() {
           `http://localhost:3001/api/blogs/${formData._id}`,
           payload
         );
-        dispatch(editBlog({ id: response.data._id, updatedBlog: response.data }));
+        dispatch(editBlog({ id: formData._id, updatedBlog: response.data }));
 
 
       } else {
@@ -94,7 +92,7 @@ export default function BlogEditor() {
       navigate("/");
     } catch (error) {
       console.error("Error during blog submission:", error);
-      setErrorMessage("An error occurred. Please try again.");
+      dispatch(setErrorMessage("An error occurred. Please try again."));
     } finally {
       dispatch(setIsPending(false));
     }
@@ -106,6 +104,7 @@ export default function BlogEditor() {
       {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
       <section>
         <form onSubmit={handleBlogFormSubmission}>
+
           <label htmlFor="title">Title</label>
           <input
             type="text"
@@ -117,13 +116,12 @@ export default function BlogEditor() {
           />
 
           <label htmlFor="author">Author</label>
-          <input
+          <input // TODO: edit input field for the author. Use logged in user
             type="text"
             id="author"
             value={formData.author}
             onChange={(e) => dispatch(setFormData({ author: e.target.value }))}
             placeholder="Author"
-            required
           />
 
           <label htmlFor="category">Category</label>
@@ -133,37 +131,39 @@ export default function BlogEditor() {
             onChange={(e) =>
               dispatch(setFormData({ category: e.target.value }))
             }
-            required
           >
             <option value="">Select a category</option>
-            <option value="politics">Politics</option>
-            <option value="business">Business</option>
-            <option value="tech">Tech</option>
-            <option value="entertainment">Entertainment</option>
-            <option value="sports">Sports</option>
-            <option value="society">Society</option>
-            <option value="other">Other</option>
+            <option value="Politics">Politics</option>
+            <option value="Business">Business</option>
+            <option value="Tech">Tech</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Sports">Sports</option>
+            <option value="Society">Society</option>
+            <option value="Other">Other</option>
           </select>
 
           <label htmlFor="content">Content</label>
           <textarea
             id="content"
             value={formData.body}
-            onChange={(e) => dispatch(setFormData({ body: e.target.value }))}
-            placeholder="Time to get creative!"
+            onChange={(e) => dispatch(setFormData({ body: e.target.value }))} // Update the body
+            placeholder="Write your blog here..."
+            style={{ height: "200px", width: "80%" }}
+            required
           />
-
+          
           <label htmlFor="image">Image</label>
-          <input
+          <input // TODO: edit input field for the image
             type="file"
             id="image"
-            onChange={handleImageChange}
+            onChange={handleImageChange} // TODO : handleImageChange
             placeholder="Upload Image"
           />
 
           <button type="submit" disabled={isPending}>
             {isEdit ? "Update" : "Submit"}
           </button>
+
         </form>
       </section>
     </div>

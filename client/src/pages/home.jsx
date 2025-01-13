@@ -2,7 +2,10 @@ import { useEffect } from "react";
 import BlogCard from "../components/blog-card";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteBlog, setBlogsList, setIsPending } from "../store/blog-slice/blog-slice";
+import {
+  setBlogsList,
+  setIsPending,
+} from "../store/blog-slice/blog-slice";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -11,6 +14,7 @@ export default function Home() {
   const navigate = useNavigate();
 
   const handleClick = () => {
+    dispatch(clearFormData());
     navigate("/edit-blog");
   };
 
@@ -44,7 +48,7 @@ export default function Home() {
         {blogsList && blogsList.length > 0 ? (
           blogsList.map((post) => (
             <div key={post._id}>
-              <BlogCard post={post} onDelete={(id) => deleteBlog(id)} />
+              <BlogCard post={post} />
             </div>
           ))
         ) : (
@@ -52,9 +56,7 @@ export default function Home() {
         )}
       </div>
 
-      <button onClick={handleClick}>
-        Create a new blog
-      </button>
+      <button onClick={handleClick}>Create a new blog</button>
     </div>
   );
 }
