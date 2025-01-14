@@ -12,6 +12,10 @@ export default function BlogCard({ post }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const handleClick = () => {
+    navigate(`/blog/${post._id}`);
+  };
+
   const handleEdit = () => {
     dispatch(setFormData(post));
     dispatch(setIsEdit(true));
@@ -40,23 +44,10 @@ export default function BlogCard({ post }) {
   return (
     <div
       className="blog-card border border-border-primary rounded-lg p-4 m-4 hover:shadow-lg transition-shadow"
-      onClick={() => console.log("Blog card clicked")} // Replace or remove based on your logic
+      onClick={handleClick}
     >
       {/* Blog Title */}
-      <p className="text-lg font-bold text-text-primary mb-2">{post.title}</p>
-
-      {/* Blog Image */}
-      <div className="mb-4">
-        {post.image ? (
-          <img
-            src={post.image}
-            alt={post.title}
-            className="w-full h-auto rounded"
-          />
-        ) : (
-          <p className="text-sm text-text-secondary">No image available</p>
-        )}
-      </div>
+      <p className="text-lg font-bold text-text-primary mb-2">{post.title}</p>      
 
       {/* Blog Details */}
       <div className="text-sm text-text-secondary mb-4">
@@ -86,7 +77,7 @@ export default function BlogCard({ post }) {
             handleEdit(post);
           }}
           size={20}
-          className="text-text-primary cursor-pointer hover:text-text-accent transition-colors"
+          className="text-text-primary cursor-pointer hover:text-red-500 transition-colors"
         />
         <FaTrash
           onClick={(e) => {

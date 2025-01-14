@@ -7,7 +7,7 @@
   /* Background Colors */
   --bg-primary: #ffffff; /* Main background */
   --bg-secondary: #f5efe7; /* Light neutral */
-  --bg-accent: #d8c4b6; /* Accent areas */
+  --bg-accent: #f1f1f1; /* Accent areas */
   --bg-header: #213555; /* Header background */
   --bg-footer: #3e5879; /* Footer background */
 
@@ -54,8 +54,10 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
+
   background-color: var(--bg-primary);
+  background-image: url("https://www.transparenttextures.com/patterns/bedge-grunge.png");
   color: var(--text-primary);
   transition: background-color 0.3s ease, color 0.3s ease;
   overflow-x: hidden; /* Prevent horizontal overflow */
@@ -63,21 +65,21 @@ body {
 }
 
 /* Header and Footer Styling */
-header {
+.headerClass {
   background-color: var(--bg-header);
   color: var(--text-accent);
 }
 
-footer {
+.footerClass {
   background-color: var(--bg-footer);
   color: var(--text-accent);
   text-align: center;
-  padding: 1rem 0;
+  padding: 1rem;
 }
 
 /* Button Styling */
 button {
-  background-color: var(--button-bg);
+  background-color: var(--bg-footer);
   color: var(--button-text);
   border: none;
   padding: 0.5rem 1rem;
@@ -132,4 +134,3 @@ button:hover {
 .pb-6 {
   padding-bottom: 1.5rem;
 }
-

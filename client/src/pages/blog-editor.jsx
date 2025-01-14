@@ -99,73 +99,108 @@ export default function BlogEditor() {
   }
 
   return (
-    <div>
-      <h2>{isEdit ? "Edit Blog" : "Create A New Blog"}</h2>
-      {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+    <div className="max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg space-y-6">
+      {/* Header */}
+      <h2 className="text-2xl font-bold text-gray-800">
+        {isEdit ? "Edit Blog" : "Create A New Blog"}
+      </h2>
+  
+      {/* Error Message */}
+      {errorMessage && (
+        <p className="text-red-500 text-sm font-semibold">{errorMessage}</p>
+      )}
+  
+      {/* Form Section */}
       <section>
-        <form onSubmit={handleBlogFormSubmission}>
-
-          <label htmlFor="title">Title</label>
-          <input
-            type="text"
-            id="title"
-            value={formData.title}
-            onChange={(e) => dispatch(setFormData({ title: e.target.value }))}
-            placeholder="Title"
-            required
-          />
-
-          <label htmlFor="author">Author</label>
-          <input // TODO: edit input field for the author. Use logged in user
-            type="text"
-            id="author"
-            value={formData.author}
-            onChange={(e) => dispatch(setFormData({ author: e.target.value }))}
-            placeholder="Author"
-          />
-
-          <label htmlFor="category">Category</label>
-          <select
-            id="category"
-            value={formData.category}
-            onChange={(e) =>
-              dispatch(setFormData({ category: e.target.value }))
-            }
-          >
-            <option value="">Select a category</option>
-            <option value="Politics">Politics</option>
-            <option value="Business">Business</option>
-            <option value="Tech">Tech</option>
-            <option value="Entertainment">Entertainment</option>
-            <option value="Sports">Sports</option>
-            <option value="Society">Society</option>
-            <option value="Other">Other</option>
-          </select>
-
-          <label htmlFor="content">Content</label>
-          <textarea
-            id="content"
-            value={formData.body}
-            onChange={(e) => dispatch(setFormData({ body: e.target.value }))} // Update the body
-            placeholder="Write your blog here..."
-            style={{ height: "200px", width: "80%" }}
-            required
-          />
-          
-          <label htmlFor="image">Image</label>
-          <input // TODO: edit input field for the image
-            type="file"
-            id="image"
-            onChange={handleImageChange} // TODO : handleImageChange
-            placeholder="Upload Image"
-          />
-
-          <button type="submit" disabled={isPending}>
-            {isEdit ? "Update" : "Submit"}
-          </button>
-
+        <form
+          onSubmit={handleBlogFormSubmission}
+          className="space-y-4"
+        >
+          {/* Title Field */}
+          <div>
+            <label htmlFor="title" className="block text-gray-700 font-medium">
+              Title
+            </label>
+            <input
+              type="text"
+              id="title"
+              value={formData.title}
+              onChange={(e) => dispatch(setFormData({ title: e.target.value }))}
+              placeholder="Enter blog title"
+              className="w-full mt-1 px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-700"
+              required
+            />
+          </div>
+  
+          {/* Author Field */}
+          <div>
+            <label htmlFor="author" className="block text-gray-700 font-medium">
+              Author
+            </label>
+            <input
+              type="text"
+              id="author"
+              value={formData.author}
+              onChange={(e) => dispatch(setFormData({ author: e.target.value }))}
+              placeholder="Author"
+              className="w-full mt-1 px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-700"
+            />
+          </div>
+  
+          {/* Category Field */}
+          <div>
+            <label htmlFor="category" className="block text-gray-700 font-medium">
+              Category
+            </label>
+            <select
+              id="category"
+              value={formData.category}
+              onChange={(e) =>
+                dispatch(setFormData({ category: e.target.value }))
+              }
+              className="w-full mt-1 px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-700"
+            >
+              <option value="">Select a category</option>
+              <option value="Politics">Politics</option>
+              <option value="Business">Business</option>
+              <option value="Tech">Tech</option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Sports">Sports</option>
+              <option value="Society">Society</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+  
+          {/* Content Field */}
+          <div>
+            <label htmlFor="content" className="block text-gray-700 font-medium">
+              Content
+            </label>
+            <textarea
+              id="content"
+              value={formData.body}
+              onChange={(e) => dispatch(setFormData({ body: e.target.value }))}
+              placeholder="Write your blog here..."
+              className="w-full mt-1 px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-700 h-80"
+              required
+            ></textarea>
+          </div>
+  
+          {/* Submit Button */}
+          <div>
+            <button
+              type="submit"
+              disabled={isPending}
+              className={`w-full text-white py-2 px-4 mb-2 rounded hover:bg-[#3673a4] transition-colors ${
+                isPending && "bg-gray-400 cursor-not-allowed"
+              }`}
+            >
+              {isEdit ? "Update" : "Submit"}
+            </button>
+          </div>
         </form>
       </section>
     </div>
   );
+  
 }
